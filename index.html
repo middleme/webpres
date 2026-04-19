@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Artciv — Management Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #16304a;
+    --navy-light: #1e3f5c;
+    --gold: #b8923a;
+    --gold-light: #d4ad5f;
+    --gold-pale: #f5ead3;
+    --cream: #f9f5ee;
+    --text-light: #e8e0d0;
+    --text-muted: #8a9db5;
+    --border: rgba(184,146,58,0.2);
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-mono: 'DM Mono', 'Courier New', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-serif);
+    background: var(--navy);
+    color: var(--text-light);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: rgba(13,27,42,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 6rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.06;
+    background-image:
+      linear-gradient(var(--gold) 1px, transparent 1px),
+      linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-rule {
+    width: 3px; height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+    margin-bottom: 2rem;
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    max-width: 900px;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 0.5px solid var(--gold);
+    padding: 1rem 2rem;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .hero-cta:hover {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  .divider {
+    display: flex; align-items: center; gap: 1.5rem;
+    padding: 0 4rem;
+    margin: 1rem 0;
+  }
+  .divider-line { flex: 1; height: 0.5px; background: var(--border); }
+  .divider-diamond {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  section { padding: 6rem 4rem; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold-light); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    margin-top: 4rem;
+    border: 0.5px solid var(--border);
+  }
+
+  .service-card {
+    padding: 2.5rem 2rem;
+    background: var(--navy);
+    border-right: 0.5px solid var(--border);
+    transition: background 0.3s;
+    position: relative;
+  }
+  .service-card:last-child { border-right: none; }
+  .service-card:hover { background: var(--navy-mid); }
+
+  .service-number {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .service-name {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .service-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 6rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .about-left { position: sticky; top: 6rem; }
+
+  .portrait-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--navy-mid);
+    border: 0.5px solid var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .portrait-initials {
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    z-index: 1;
+  }
+
+  .portrait-name {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 1rem;
+    z-index: 1;
+  }
+
+  .portrait-bg {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 30px,
+      rgba(184,146,58,0.03) 30px,
+      rgba(184,146,58,0.03) 31px
+    );
+  }
+
+  .about-right p {
+    font-size: 1.1rem;
+    line-height: 1.85;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-right p:first-child {
+    font-size: 1.4rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--cream);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .stat-item {}
+  .stat-num {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    display: block;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    display: block;
+  }
+
+  .credentials {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .cred-item {
+    margin-bottom: 2rem;
+  }
+
+  .cred-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .cred-value {
+    font-size: 1.05rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  .contact-section {
+    background: var(--navy-mid);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .contact-detail {
+    display: flex; flex-direction: column;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .contact-item {}
+  .contact-item-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  .contact-item-val {
+    font-size: 1rem;
+    color: var(--text-light);
+  }
+
+  .contact-form { margin-top: 3rem; }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .form-group input, .form-group textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 0.5px solid var(--border);
+    padding: 0.75rem 0;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--text-light);
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    border-bottom-color: var(--gold);
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder {
+    color: rgba(138,157,181,0.4);
+  }
+  .form-group textarea { min-height: 120px; }
+
+  .form-submit {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--gold);
+    border: none;
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 1rem;
+  }
+  .form-submit:hover { background: var(--gold-light); }
+
+  footer {
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .footer-logo {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold-light); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 2rem; }
+    .hero { padding: 6rem 2rem 4rem; }
+    .about-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .about-left { position: static; }
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .divider { padding: 0 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Artciv</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-rule"></div>
+  <p class="hero-label">Management Consulting · Energy · Fintech · Technology</p>
+  <h1>Precision thinking<br/>for <em>complex</em><br/>industries.</h1>
+  <p class="hero-sub">Artciv brings quantitative rigor and two decades of operational experience to the world's most demanding sectors. From energy markets to financial systems, we solve problems where the math matters and the stakes are high.</p>
+  <a href="#contact" class="hero-cta">Engage with us</a>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-diamond"></div>
+  <div class="divider-line"></div>
+</div>
+
+<section id="services">
+  <p class="section-label">What we do</p>
+  <h2 class="section-title">Our areas of <em>practice</em></h2>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-number">01</span>
+      <div class="service-name">Conventional Oil &amp; Gas</div>
+      <p class="service-desc">Upstream asset evaluation, production forecasting, and hedging strategy. We've analyzed acquisition targets using Aries and PhdWin, built cash flow models for E&amp;P portfolios, and structured commodity hedges to lock in margins.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-number">02</span>
+      <div class="service-name">Electricity &amp; Power</div>
+      <p class="service-desc">Power forecasting, ISO market participation, and dispatch optimization. We've traded NYISO day-ahead and real-time spreads, built generation stack models with carbon pricing, and created forecasting tools for PJM and New England markets.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-number">03</span>
+      <div class="service-name">Renewable Energy</div>
+      <p class="service-desc">Commercial solar feasibility, PPA structuring, and project finance. We've modeled cashflows for multi-megawatt installations, structured power purchase agreements for corporate and government clients, and assembled capital stacks with institutional lenders.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-number">04</span>
+      <div class="service-name">Financial Technology</div>
+      <p class="service-desc">Risk modeling for fintech lending, automated trading infrastructure, and operations analytics. We've assessed subprime loan portfolios totaling $50MM, built waterfall reporting for structured products, and predicted default rates using regression and simulation.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-number">05</span>
+      <div class="service-name">Information Technology</div>
+      <p class="service-desc">Process automation, data engineering, and operational efficiency. We've cut production cycles from weeks to hours through pricing automation, built self-updating market dashboards pulling Bloomberg API data, and designed database consolidation strategies.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-diamond"></div>
+  <div class="divider-line"></div>
+</div>
+
+
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-num">20+</span>
+          <span class="stat-label">Years in industry</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Sectors served</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Quant-Driven</span>
+        </div>
+      </div>
+
+  
+
+  
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-diamond"></div>
+  <div class="divider-line"></div>
+</div>
+
+<section id="contact" class="contact-section">
+  <div class="contact-inner">
+    <div>
+      <p class="section-label">Get in touch</p>
+      <h2 class="section-title">Let's discuss<br/>your <em>challenge</em></h2>
+      <p style="font-size:1rem; color:var(--text-muted); line-height:1.8; margin-top:1rem; max-width:380px;">
+        Whether you're navigating a strategic inflection, an operational challenge, or a technology transformation, we'd welcome the conversation.
+      </p>
+
+      <div class="contact-detail">
+        <div class="contact-item">
+          <span class="contact-item-label">Email</span>
+          <span class="contact-item-val">info@artciv.com</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Phone</span>
+          <span class="contact-item-val">+1 (347) 827-1001</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Location</span>
+          <span class="contact-item-val"> New York, NY</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="form-group">
+        <label>Your name</label>
+        <input type="text" placeholder="Full name" />
+      </div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" placeholder="info@artciv.com" />
+      </div>
+      <div class="form-group">
+        <label>Company</label>
+        <input type="text" placeholder="Organization" />
+      </div>
+      <div class="form-group">
+        <label>How can we help?</label>
+        <textarea placeholder="Briefly describe the challenge or opportunity..."></textarea>
+      </div>
+      <button class="form-submit">Send inquiry →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Artciv</div>
+  <p class="footer-copy">© 2026 Artciv. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>
